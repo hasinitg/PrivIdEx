@@ -2,7 +2,7 @@ package handshake
 
 import(
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	"PrivIdEx/PrivIdExChaincode/util"
+	"chaincode/PrivIdEx/PrivIdExChaincode/util"
 	"encoding/json"
 	"github.com/twinj/uuid"
 	"fmt"

@@ -9,8 +9,8 @@ import (
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/protos/peer"
 
-	"PrivIdEx/PrivIdExChaincode/handshake"
-	"PrivIdEx/PrivIdExChaincode/util"
+	"chaincode/PrivIdEx/PrivIdExChaincode/handshake"
+	"chaincode/PrivIdEx/PrivIdExChaincode/util"
 )
 
 /**This is the entry point to the chaincode that implements the privacy preserving identity asset exchange.**/
