@@ -22,5 +22,22 @@ Following are the instructions for downloading, building and deploying the chain
 # Setting up the blockchain network
 
 1. Hyperledger fabric blockchain network is consisted of multiple entities running in docker containers. Make sure you have installed docker in your machine and downloaded the latest hyperledger fabric docker images. 
-To download the latest yperledger fabric docker images, execute this curl command: curl -sSL https://goo.gl/Gci9ZX | bash
+
+To download the latest hyperledger fabric docker images, execute this curl command: curl -sSL https://goo.gl/Gci9ZX | bash
 (source: http://hyperledger-fabric.readthedocs.io/en/latest/samples.html)
+2. Change directory to PrivIdEx/devmode-fabric-network. The file named: docker-compose-simple.yaml file has the definition of the blockchain network. This network is supported by some pre-created artifacts such as channel artifacts to make the development and testing of chaincode easier.
+3. We will execute the commands on the network in three different terminals, when deploying and testing our chaincode, as it is also done in this tutorial: http://hyperledger-fabric.readthedocs.io/en/latest/chaincode4ade.html
+
+#### Terminal 1:
+1. Execute: 'docker-compose -f docker-compose-simple.yaml' - this will start a blockchain network with orderer, peer, chaincode container and a cli container.
+
+#### Terminal 2:
+1. Execute: 'docker exec -it chaincode bash'. This will enter you into the chaincode container. Since the script in: docker-compose-simple.yaml file has mapped your local working directory into the chaincode container's working directory, you can see the PrivIdEx folder inside the chaincode container's working directory.
+2. Change directory into PrivIdEx/PrivIdExChaincode
+3. Execute: 'CORE_PEER_ADDRESS=peer:7051 CORE_CHAINCODE_ID_NAME=prividexcc:0 ./PrivIdExChaincode' in order to run the chaincode with the chaincode id: prividexcc. At this point, the chaincode is only started and is not associated with any channel.
+
+#### Terminal 3:
+1. Execute : 'docker exec -it cli bash' to enter into the cli container.
+2. Execute: 'go get github.com/twinj/uuid' in order to import some third party Go packages used by our chaincode, into the cli container.
+3. Execute: 'peer chaincode install -p chaincode/PrivIdEx/PrivIdExChaincode -n prividexcc -v 0' in order to install the chaincode.
+4. Execute: 'peer chaincode instantiate -n prividexcc -v 0 -c -C myc' in order to instrantiate the chaincode and associate it with the channel named: 'myc'.
