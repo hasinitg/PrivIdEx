@@ -1,5 +1,4 @@
 # PrivIdEx
-Code for PrivIdEx project
 
 **PrivIdExChaincode**   folder contains the smart contract (chaincode) implementing the **PrivIdEx protocol** in Go language.
 
