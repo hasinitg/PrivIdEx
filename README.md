@@ -30,7 +30,9 @@ Following are the instructions for downloading, building and deploying the chain
 
 To download the latest hyperledger fabric docker images, execute this curl command: curl -sSL https://goo.gl/Gci9ZX | bash
 (source: http://hyperledger-fabric.readthedocs.io/en/latest/samples.html)
+
 2. Change directory to PrivIdEx/devmode-fabric-network. The file named: docker-compose-simple.yaml file has the definition of the blockchain network. This network is supported by some pre-created artifacts such as channel artifacts to make the development and testing of chaincode easier.
+
 3. We will execute the commands on the network in three different terminals, when deploying and testing our chaincode, as it is also done in this tutorial: http://hyperledger-fabric.readthedocs.io/en/latest/chaincode4ade.html
 
 #### Terminal 1:
