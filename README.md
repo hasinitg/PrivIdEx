@@ -18,11 +18,9 @@ Following are the instructions for downloading, building and deploying the chain
 
 # Building the code:
 
-1. Import an external package used by the code, by executing: 'go get github.com/twinj/uuid'
+1. Change directory into the PrivIdEx/PrivIdExChaincode
 
-2. Change directory into the PrivIdEx/PrivIdExChaincode
-
-3. Execute: 'go build'
+2. Execute: 'go build'
 
 # Setting up the blockchain network
 
@@ -36,18 +34,21 @@ To download the latest hyperledger fabric docker images, execute this curl comma
 3. We will execute the commands on the network in three different terminals, when deploying and testing our chaincode, as it is also done in this tutorial: http://hyperledger-fabric.readthedocs.io/en/latest/chaincode4ade.html
 
 #### Terminal 1:
-1. Execute: *'docker-compose -f docker-compose-simple.yaml'* - this will start a blockchain network with orderer, peer, chaincode container and a cli container.
+1. Execute: *'docker-compose -f docker-compose-simple.yaml up'* - this will start a blockchain network with orderer, peer, chaincode container and a cli container.
 
 #### Terminal 2:
 1. Execute: *'docker exec -it chaincode bash'*. This will enter you into the chaincode container. Since the script in: docker-compose-simple.yaml file has mapped your local working directory into the chaincode container's working directory, you can see the PrivIdEx folder inside the chaincode container's working directory.
 2. Change directory into PrivIdEx/PrivIdExChaincode
+3. Execute: 'go build' to build the chaincode inside the container.
 3. Execute: *'CORE_PEER_ADDRESS=peer:7051 CORE_CHAINCODE_ID_NAME=prividexcc:0 ./PrivIdExChaincode'* in order to run the chaincode with the chaincode id: prividexcc. At this point, the chaincode is only started and is not associated with any channel.
 
 #### Terminal 3:
 1. Execute : *'docker exec -it cli bash'* to enter into the cli container.
-2. Execute: *'go get github.com/twinj/uuid'* in order to import some third party Go packages used by our chaincode, into the cli container.
 3. Execute: *'peer chaincode install -p chaincode/PrivIdEx/PrivIdExChaincode -n prividexcc -v 0'* in order to install the chaincode.
-4. Execute: *'peer chaincode instantiate -n prividexcc -v 0 -c -C myc'* in order to instrantiate the chaincode and associate it with the channel named: 'myc'.
-5. Execute: *'peer chaincode invoke -n prividexcc -c '{"Args":["initHandshake", "{\"TransactionID\":\"tr1\",\"ConsumerID\":\"c1\",\"UserID\":\"u1\",\"ProviderID\":\"p1\",\"IdentityAssetName\":\"kyc_compliance\",\"Signature\":\"s1\"}"]}' -C myc'* in order to invoke the 'initHandshake' method of the chaincode, with the given json input. 
+4. Execute: *'peer chaincode instantiate -n prividexcc -v 0 -c '{"Args":[]}' -C myc'* in order to instrantiate the chaincode and associate it with the channel named: 'myc'.
+5. Execute: *'peer chaincode invoke -n prividexcc -c '{"Args":["initHandshake", "{\"TransactionID\":\"0ttl5HdQCG53TR4T6ANBQHVMvcq\",\"ConsumerID\":\"c1\",\"ConsumerPublicKey\":\"c_PK\",\"UserID\":\"u1\",\"UserPublicKey\":\"u_PK\",\"ProviderID\":\"p1\",\"ProviderPublicKey\":\"p_PK\",\"IdentityAssetName\":\"kyc_compliance\",\"Signature1\":\"s1\",\"Signature2\":\"s2\"}"]}' -C myc'* in order to invoke the 'initHandshake' method of the chaincode, with the given json input. 
 
 You will receive a message that that the transaction was submitted to blockchain network successfully and also can see in Terminal 1 that the handshake message is added to the ledger.
+
+### Stop the fabric network:
+In a separate terminal, execute : 'docker-compose -f docker-compose-simple.yaml down' gracefully shutdown the blockchain network, during the chaincode development process.
