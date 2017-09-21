@@ -59,6 +59,7 @@ func (idAsset *IdentityAsset) Invoke(stub shim.ChaincodeStubInterface) peer.Resp
 	}
 
 	// Return the result as success payload
+	//fmt.Println("Result: ", result)
 	return shim.Success([]byte(result))
 }
 

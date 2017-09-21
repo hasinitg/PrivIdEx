@@ -4,8 +4,8 @@ import(
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"chaincode/PrivIdEx/PrivIdExChaincode/util"
 	"encoding/json"
-	"github.com/twinj/uuid"
 	"fmt"
+	"bytes"
 )
 
 func InitHandshake(stub shim.ChaincodeStubInterface, args []string) (string, error){
@@ -14,24 +14,35 @@ func InitHandshake(stub shim.ChaincodeStubInterface, args []string) (string, err
 		//err:= "Invalid number of arguments."
 		return "", util.InvalidArgumentError{len(args), 1}
 	}
-	var handshakeRecord HandshakeRecord
+	var initHandshakeRecord HandshakeRecord
 
-	if err:= json.Unmarshal([]byte(args[0]), &handshakeRecord); err!=nil{
+	if err:= json.Unmarshal([]byte(args[0]), &initHandshakeRecord); err!=nil{
 		return "",util.JSONDecodingError{args[0]}
 	}
 
-	//generate a unique transaction id:
-	uuidByte := uuid.NewV4()
-	uuidString := string(uuidByte)
+	//TODO: validate the ids and signatures on the message.
 
-	//TODO: validate the signature on the message.
 	//TODO: create composite key combining the participants' ids. This will be useful in validation checks of the
 	//subsequent methods, rather than only using the uuid.
+	transactionKey := CreateTransactionKey(initHandshakeRecord.TransactionID, initHandshakeRecord.ConsumerID, initHandshakeRecord.UserID,
+		initHandshakeRecord.ProviderID)
 
-	if err := stub.PutState(uuidString, []byte(args[0])); err!=nil {
-		return "", fmt.Errorf("Failed to set asset: %s", args[0])
+	if err := stub.PutState(transactionKey, []byte(args[0])); err!=nil {
+		return "", fmt.Errorf("Failed to submit the initHandshake message to the blockchain for processing: %s", args[0])
 	}
+	resp := fmt.Sprintf("InitHandshake message was submitted to the blockchain for processing.")
+	return resp, nil
 
-	return "Message was submitted to the blockchain for processing.", nil
+}
 
+func CreateTransactionKey(transactionID, consumerID, userID, providerID string) (string){
+	var buffer bytes.Buffer
+	buffer.WriteString(transactionID)
+	buffer.WriteString(":")
+	buffer.WriteString(consumerID)
+	buffer.WriteString(":")
+	buffer.WriteString(userID)
+	buffer.WriteString(":")
+	buffer.WriteString(providerID)
+	return buffer.String()
 }
