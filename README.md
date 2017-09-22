@@ -46,7 +46,7 @@ To download the latest hyperledger fabric docker images, execute this curl comma
 1. Execute : *'docker exec -it cli bash'* to enter into the cli container.
 3. Execute: *'peer chaincode install -p chaincode/PrivIdEx/PrivIdExChaincode -n prividexcc -v 0'* in order to install the chaincode.
 4. Execute: *'peer chaincode instantiate -n prividexcc -v 0 -c '{"Args":[]}' -C myc'* in order to instrantiate the chaincode and associate it with the channel named: 'myc'.
-5. Execute: *'peer chaincode invoke -n prividexcc -c '{"Args":["initHandshake", "{\"TransactionID\":\"0ttl5HdQCG53TR4T6ANBQHVMvcq\",\"ConsumerID\":\"c1\",\"ConsumerPublicKey\":\"c_PK\",\"UserID\":\"u1\",\"UserPublicKey\":\"u_PK\",\"ProviderID\":\"p1\",\"ProviderPublicKey\":\"p_PK\",\"IdentityAssetName\":\"kyc_compliance\",\"Signature1\":\"s1\",\"Signature2\":\"s2\"}"]}' -C myc'* in order to invoke the 'initHandshake' method of the chaincode, with the given json input. 
+5. Execute: *'peer chaincode invoke -n prividexcc -c '{"Args":["initHandshake", "{\\"TransactionID\":\"0ttl5HdQCG53TR4T6ANBQHVMvcq\",\"ConsumerID\":\"c1\",\"ConsumerPublicKey\":\"c_PK\",\"UserID\":\"u1\",\"UserPublicKey\":\"u_PK\",\"ProviderID\":\"p1\",\"ProviderPublicKey\":\"p_PK\",\"IdentityAssetName\":\"kyc_compliance\",\"Signature1\":\"s1\",\"Signature2\":\"s2\"}"]}' -C myc'* in order to invoke the 'initHandshake' method of the chaincode, with the given json input. 
 
 You will receive a message that that the transaction was submitted to blockchain network successfully and also can see in Terminal 1 that the handshake message is added to the ledger.
 
