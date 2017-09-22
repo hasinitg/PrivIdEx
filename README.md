@@ -19,7 +19,9 @@ Following are the instructions for downloading, building and deploying the chain
 # Obtaining the required dependencies:
 
 1. From the 'src' directory of your GOPATH, execute:
+
 i. go get github.com/hyperledger/fabric
+
 ii. go get github.com/segmentio/ksuid
 
 # Building the code:
@@ -27,6 +29,8 @@ ii. go get github.com/segmentio/ksuid
 1. Change directory into the GOPATH/src/chaincode/PrivIdEx/PrivIdExChaincode
 
 2. Execute: 'go build'
+
+3. To run the test cases, execute: 'go test' 
 
 # Setting up the blockchain network
 
