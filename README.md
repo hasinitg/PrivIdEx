@@ -8,7 +8,7 @@ Following are the instructions for downloading, building and deploying the chain
 
 # Downloading the code:
 
-1. First install Go in your local machine following the instructions at: https://golang.org/dl/
+1. First install Go in your local machine following the instructions at: https://golang.org/dl/ (make sure to install go version 1.8.3 or newer)
 
 2. Set the GOPATH environment variable to point to your Go working directory. See: https://golang.org/doc/code.html#GOPATH for more details.
 
@@ -16,11 +16,21 @@ Following are the instructions for downloading, building and deploying the chain
 
 4. Clone the PrivIdEx repository inside the 'chaincode' directory, by executing: 'git clone https://github.com/hasinitg/PrivIdEx.git'
 
+# Obtaining the required dependencies:
+
+1. From the 'src' directory of your GOPATH, execute:
+
+i. go get github.com/hyperledger/fabric
+
+ii. go get github.com/segmentio/ksuid
+
 # Building the code:
 
-1. Change directory into the PrivIdEx/PrivIdExChaincode
+1. Change directory into the GOPATH/src/chaincode/PrivIdEx/PrivIdExChaincode
 
 2. Execute: 'go build'
+
+3. To run the test cases, execute: 'go test' 
 
 # Setting up the blockchain network
 
@@ -46,7 +56,7 @@ To download the latest hyperledger fabric docker images, execute this curl comma
 1. Execute : *'docker exec -it cli bash'* to enter into the cli container.
 3. Execute: *'peer chaincode install -p chaincode/PrivIdEx/PrivIdExChaincode -n prividexcc -v 0'* in order to install the chaincode.
 4. Execute: *'peer chaincode instantiate -n prividexcc -v 0 -c '{"Args":[]}' -C myc'* in order to instrantiate the chaincode and associate it with the channel named: 'myc'.
-5. Execute: *'peer chaincode invoke -n prividexcc -c '{"Args":["initHandshake", "{\"TransactionID\":\"0ttl5HdQCG53TR4T6ANBQHVMvcq\",\"ConsumerID\":\"c1\",\"ConsumerPublicKey\":\"c_PK\",\"UserID\":\"u1\",\"UserPublicKey\":\"u_PK\",\"ProviderID\":\"p1\",\"ProviderPublicKey\":\"p_PK\",\"IdentityAssetName\":\"kyc_compliance\",\"Signature1\":\"s1\",\"Signature2\":\"s2\"}"]}' -C myc'* in order to invoke the 'initHandshake' method of the chaincode, with the given json input. 
+5. Execute: *'peer chaincode invoke -n prividexcc -c '{"Args":["initHandshake", "{\\"TransactionID\\":\\"0ttl5HdQCG53TR4T6ANBQHVMvcq\\",\\"ConsumerID\\":\\"c1\\",\\"ConsumerPublicKey\\":\\"c_PK\\",\\"UserID\\":\\"u1\\",\\"UserPublicKey\\":\\"u_PK\\",\\"ProviderID\\":\\"p1\\",\\"ProviderPublicKey\\":\\"p_PK\\",\\"IdentityAssetName\\":\\"kyc_compliance\\",\\"Signature1\\":\\"s1\\",\\"Signature2\\":\\"s2\\"}"]}' -C myc'* in order to invoke the 'initHandshake' method of the chaincode, with the given json input. 
 
 You will receive a message that that the transaction was submitted to blockchain network successfully and also can see in Terminal 1 that the handshake message is added to the ledger.
 
