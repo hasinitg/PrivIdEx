@@ -43,6 +43,8 @@ To download the latest hyperledger fabric docker images, execute this curl comma
 
 3. We will execute the commands on the network in three different terminals, when deploying and testing our chaincode, as it is also done in this tutorial: http://hyperledger-fabric.readthedocs.io/en/latest/chaincode4ade.html
 
+4. If you have existing docker containers running in your machine, which may conflict with the docker containers used in this tutorial, please stop and remove them (see: https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes for commands).
+
 #### Terminal 1:
 1. Execute: *'docker-compose -f docker-compose-simple.yaml up'* - this will start a blockchain network with orderer, peer, chaincode container and a cli container.
 
