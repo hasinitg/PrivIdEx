@@ -72,23 +72,6 @@ func TestInitHandshake_with_EncodingDecoding(t *testing.T) {
 	}
 }
 
-//func TestInitHandshake_with_Crypto(t *testing.T){
-//	reader := rand.Reader
-//	bitSize := 2048
-//
-//	key, err := rsa.GenerateKey(reader, bitSize)
-//	CheckError(err)
-//
-//	publicKey := key.PublicKey
-//
-//	SaveGobKey("private.key", key)
-//	SavePEMKey("private.pem", key)
-//
-//	SaveGobKey("public.key", publicKey)
-//	SavePublicPEMKey("public.pem", publicKey)
-//
-//}
-
 func checkInit(t *testing.T, stub *shim.MockStub, args [][]byte) (string){
 	response := stub.MockInit("1", args)
 	if response.Status != shim.OK {
