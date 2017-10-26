@@ -2,7 +2,7 @@
 
 **PrivIdExChaincode**   folder contains the smart contract (chaincode) implementing the **PrivIdEx protocol** in Go language.
 
-**devmode-fabric-network** folder contains the artifacts to setup a simple blockchain network backed by hyperledger fabric in dev mode. These artifacts are slightly modified version of the artifacts provided in fabric-samples/chaincode-docker-devmode in https://github.com/hyperledger/fabric-samples.git
+**devmode-fabric-network** folder contains the artifacts to setup a simple blockchain network backed by hyperledger fabric in **dev mode**. These artifacts are slightly modified version of the artifacts provided in fabric-samples/chaincode-docker-devmode in https://github.com/hyperledger/fabric-samples.git
 
 Following are the instructions for downloading, building and deploying the chaincode into a simple blockchain network and invoking the chaincode.
 
@@ -59,10 +59,9 @@ To download the latest hyperledger fabric docker images, execute this curl comma
 3. Execute: *'peer chaincode install -p chaincode/PrivIdEx/PrivIdExChaincode -n prividexcc -v 0'* in order to install the chaincode.
 4. Execute: *'peer chaincode instantiate -n prividexcc -v 0 -c '{"Args":[]}' -C myc'* in order to instrantiate the chaincode and associate it with the channel named: 'myc'.
 5. Execute: *'peer chaincode invoke -n prividexcc -c '{"Args":["initHandshake", "{\\"TransactionID\\":\\"0ttl5HdQCG53TR4T6ANBQHVMvcq\\",\\"ConsumerID\\":\\"c1\\",\\"ConsumerPublicKey\\":\\"c_PK\\",\\"UserID\\":\\"u1\\",\\"UserPublicKey\\":\\"u_PK\\",\\"ProviderID\\":\\"p1\\",\\"ProviderPublicKey\\":\\"p_PK\\",\\"IdentityAssetName\\":\\"kyc_compliance\\",\\"Signature1\\":\\"s1\\",\\"Signature2\\":\\"s2\\"}"]}' -C myc'* in order to invoke the 'initHandshake' method of the chaincode, with the given json input. 
-6. Execute: *'peer chaincode invoke -n prividexcc -c '{"Args":["query","0ttl5HdQCG53TR4T6ANBQHVMvcq:c1:u1:p1"]}' -C myc'* in order to query the posted initHandshake message by the transaction key. You will see the posted message as the query result printed on the terminal.
-
 You will receive a message that the transaction was submitted to blockchain network successfully and also can see in Terminal 1 that the handshake message is added to the ledger.
-You can see the log messages printed by our chaincode in Terminal 2. 
+You can see the log messages printed by our chaincode in Terminal 2.
+6. Execute: *'peer chaincode invoke -n prividexcc -c '{"Args":["query","0ttl5HdQCG53TR4T6ANBQHVMvcq:c1:u1:p1"]}' -C myc'* in order to query the posted initHandshake message by the transaction key. You will see the posted message as the query result printed on the terminal. 
 
 ### Stop the fabric network:
 In a separate terminal, execute : 'docker-compose -f docker-compose-simple.yaml down' gracefully shutdown the blockchain network, during the chaincode development process.
