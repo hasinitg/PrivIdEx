@@ -11,6 +11,7 @@ import (
 
 	"chaincode/PrivIdEx/PrivIdExChaincode/handshake"
 	"chaincode/PrivIdEx/PrivIdExChaincode/util"
+	"chaincode/PrivIdEx/PrivIdExChaincode/transfer"
 )
 
 /**This is the entry point to the chaincode that implements the privacy preserving identity asset exchange.**/
@@ -46,11 +47,14 @@ func (idAsset *IdentityAsset) Invoke(stub shim.ChaincodeStubInterface) peer.Resp
 		log.Info("InitHandshake function was invoked.")
 		result, err = handshake.InitHandshake(stub, args, log)
 	case "respHandshake":
-		result, err = handshake.InitHandshake(stub, args, log)
+		log.Info("RespHandshake function was invoked.")
+		result, err = handshake.RespHandshake(stub, args, log)
 	case "confirmHandshake":
-		result, err = handshake.InitHandshake(stub, args, log)
+		log.Info("ConfHandshake function was invoked.")
+		result, err = handshake.ConfHandshake(stub, args, log)
 	case "transferAsset":
-		result, err = handshake.InitHandshake(stub, args, log)
+		log.Info("TransferAsset function was invoked.")
+		result, err = transfer.TransferAsset(stub, args, log)
 	case "confirmReceiptOfAsset":
 		result, err = handshake.InitHandshake(stub, args, log)
 	case "query":

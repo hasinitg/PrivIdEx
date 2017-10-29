@@ -1,0 +1,16 @@
+{
+  "idAsset" : {
+    "nameOfIdAsset" : "KYC_for_Banking",
+    "nameOfUser"    : "Cherry Berry",
+    "passport" : {
+      "number" : "N587865",
+      "expiration-date" : "06-07-2022",
+      "issuing-country" : "UDK"
+    },
+    "SSN" : {
+      "number" : "6780-95-3245",
+      "expiration-date" : "20-07-2010"
+    }
+
+  }
+}

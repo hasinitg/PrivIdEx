@@ -10,6 +10,7 @@ import (
 	"github.com/segmentio/ksuid"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"fmt"
+	"chaincode/PrivIdEx/PrivIdExChaincode/util"
 )
 
 func TestEncodingDecodingHandshakeRecord(t *testing.T){
@@ -66,7 +67,7 @@ func TestInitHandshake_with_EncodingDecoding(t *testing.T) {
 		stub.MockTransactionEnd("t1")
 
 		//check if the message is in the ledger.
-		checkQuery(t, stub, handshake.CreateTransactionKey(initHandshakeMessage.TransactionID,
+		checkQuery(t, stub, util.CreateTransactionKey(util.INIT_HANDSHAKE, initHandshakeMessage.TransactionID,
 			initHandshakeMessage.ConsumerID, initHandshakeMessage.UserID, initHandshakeMessage.ProviderID), string(encodedMsg))
 
 	}
@@ -117,7 +118,8 @@ func createInitHandshakeRecord() (handshake.HandshakeRecord){
 	//fmt.Println(transactionID)
 
 	//create a dummy handshake message for now. TODO: add actual crypto information.
-	initHandshakeMessage := handshake.HandshakeRecord{transactionID, "c1", "c_PK", "u1",
-		"u_PK", "p1", "p_PK", "kyc_compliance", "s1", "s2"}
+	initHandshakeMessage := handshake.HandshakeRecord{ util.INIT_HANDSHAKE, transactionID,
+		"c1", "c_PK", "u1","u_PK", "p1", "p_PK",
+		"kyc_compliance", "s1", "s2"}
 	return initHandshakeMessage
 }
