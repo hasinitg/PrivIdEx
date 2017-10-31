@@ -14,9 +14,9 @@ import (
 )
 
 func TestEncodingDecodingHandshakeRecord(t *testing.T){
-
+	transactionID := ksuid.New().String()
 	//create a dummy handshake message
-	initHandshakeMessage := createInitHandshakeRecord()
+	initHandshakeMessage := createInitHandshakeRecord(transactionID)
 
 	encodedMsg, err := json.Marshal(initHandshakeMessage)
 
@@ -40,10 +40,35 @@ func TestEncodingDecodingHandshakeRecord(t *testing.T){
 	}
 }
 
-//This is supposed to test the methods of the chaincode in handshake phase. However, it is not completed yet.
-func TestInitHandshake_with_EncodingDecoding(t *testing.T) {
+/*This is the test case that simulates the different steps of the protocol implemented in prividex chaincode.*/
+func TestPrivIdExChaincodeForEncodingDecoding(t *testing.T){
+	//create a transaction id (the reason why we create the transaction id by the caller, rather than generating it in
+	// the chaincode is that: chaincode is run in multiple nodes and difff transaction ids could be generated)
+	actualTransactionID := ksuid.New().String()
+
+	//create a mock stub by passing identity asset
+	idAsset := new(IdentityAsset)
+
+	stub := shim.NewMockStub("testInitHSEncDec", idAsset)
+
+	//initialize the chaincode
+	checkInit(t, stub, [][]byte{[]byte("init")})
+
+	//test legitimate inithandshake step:
+	testInitHandshake(t, stub, actualTransactionID)
+
+	//test illegitimate inithandshake step
+	responseStatus := testInitHandshake(t, stub, actualTransactionID)
+	if responseStatus == shim.OK {
+		fmt.Println("Invalid initHandshake transaction was allowed.")
+		t.FailNow()
+	}
+
+}
+
+func testInitHandshake(t *testing.T, stub *shim.MockStub, transactionID string) (int32){
 	//create a dummy handshake message
-	initHandshakeMessage := createInitHandshakeRecord()
+	initHandshakeMessage := createInitHandshakeRecord(transactionID)
 
 	encodedMsg, err := json.Marshal(initHandshakeMessage)
 	if err!=nil{
@@ -51,27 +76,24 @@ func TestInitHandshake_with_EncodingDecoding(t *testing.T) {
 		t.FailNow()
 
 	} else {
-		//create a mock stub by passing identity asset
-		idAsset := new(IdentityAsset)
-
-		stub := shim.NewMockStub("testInitHSEncDec", idAsset)
-
-		//initialize the chaincode (TODO: move this and mock stub creation to a outer bigger test case which sequences all the test cases.)
-		checkInit(t, stub, [][]byte{[]byte("init")})
-
 		//since any write to the ledger needs to be in a transactional context, the test must start the transaction before
 		// invoking and end after invoking.
 		stub.MockTransactionStart("t1")
-		responseInitHandshake := checkInvoke(t, stub, [][]byte{[]byte("initHandshake"), []byte(encodedMsg)})
+		responseStatus, responseInitHandshake := checkInvoke(t, stub, [][]byte{[]byte("initHandshake"), []byte(encodedMsg)})
 		fmt.Println("Response from initHanshake invoke : ", responseInitHandshake)
 		stub.MockTransactionEnd("t1")
+
+		if responseStatus != shim.OK {
+			return responseStatus
+		}
 
 		//check if the message is in the ledger.
 		checkQuery(t, stub, util.CreateTransactionKey(util.INIT_HANDSHAKE, initHandshakeMessage.TransactionID,
 			initHandshakeMessage.ConsumerID, initHandshakeMessage.UserID, initHandshakeMessage.ProviderID), string(encodedMsg))
-
 	}
+	return shim.OK
 }
+
 
 func checkInit(t *testing.T, stub *shim.MockStub, args [][]byte) (string){
 	response := stub.MockInit("1", args)
@@ -82,12 +104,13 @@ func checkInit(t *testing.T, stub *shim.MockStub, args [][]byte) (string){
 	return response.Message
 }
 
-func checkInvoke(t *testing.T, stub *shim.MockStub, args [][]byte) (string){
+func checkInvoke(t *testing.T, stub *shim.MockStub, args [][]byte) (int32, string){
 	response := stub.MockInvoke("1", args)
 	if response.Status != shim.OK {
 		fmt.Println("Invoke with ", string(args[0]), " failed.", string(response.Message))
+		return response.Status, ""
 	}
-	return string(response.Payload)
+	return response.Status, string(response.Payload)
 }
 
 func checkQuery(t *testing.T, stub *shim.MockStub, key string, expectedValue string) {
@@ -111,15 +134,20 @@ func checkQuery(t *testing.T, stub *shim.MockStub, key string, expectedValue str
 	}
 }
 
-func createInitHandshakeRecord() (handshake.HandshakeRecord){
-	//create a transaction id (the reason why we create the transaction id by the caller, rather than generating it in
-	// the chaincode is that: chaincode is run in multiple nodes and difff transaction ids could be generated)
-	transactionID := ksuid.New().String()
-	//fmt.Println(transactionID)
+func createInitHandshakeRecord(transactionID string) (handshake.HandshakeRecord){
 
 	//create a dummy handshake message for now. TODO: add actual crypto information.
 	initHandshakeMessage := handshake.HandshakeRecord{ util.INIT_HANDSHAKE, transactionID,
 		"c1", "c_PK", "u1","u_PK", "p1", "p_PK",
 		"kyc_compliance", "s1", "s2"}
 	return initHandshakeMessage
+}
+
+func createRespHandshakeRecord(transactionID string) (handshake.HandshakeRecord){
+
+	//create a dummy handshake message for now. TODO: add actual crypto information.
+	respHandshakeMessage := handshake.HandshakeRecord{ util.RESP_HANDSHAKE, transactionID,
+		"c1", "c_PK", "u1","u_PK", "p1", "p_PK",
+		"kyc_compliance", "s1", "s2"}
+	return respHandshakeMessage
 }
