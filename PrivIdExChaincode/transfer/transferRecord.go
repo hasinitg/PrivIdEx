@@ -1,6 +1,6 @@
 package transfer
 
-type transferRecord struct{
+type TransferRecord struct{
 	TransactionID,
 	ConsumerID,
 	ConsumerPublicKey,
@@ -8,7 +8,7 @@ type transferRecord struct{
 	UserPublicKey,
 	ProviderID,
 	ProviderPublicKey,
-	IdentityAssetName,
-	Signature string
+	IdentityAssetName string
 	IdAsset []byte
+	Signature string
 }

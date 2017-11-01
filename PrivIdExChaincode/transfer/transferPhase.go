@@ -17,7 +17,7 @@ func TransferAsset(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 		//err:= "Invalid number of arguments."
 		return "", util.InvalidArgumentError{len(args), 1}
 	}
-	var transfRecord transferRecord
+	var transfRecord TransferRecord
 
 	if err := json.Unmarshal([]byte(args[0]), &transfRecord); err != nil {
 		return "", util.JSONDecodingError{args[0]}
@@ -41,7 +41,7 @@ func TransferAsset(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 		transfRecord.ConsumerID, transfRecord.UserID, transfRecord.ProviderID)
 
 	//TODO: Although log level is set to Debug, it is not recognized and set to INFO by default. Therefore, making this INFO.
-	log.Infof("Transaction key for transferAsset record: %s", transactionKeyForTransferAsset)
+	//log.Infof("Transaction key for transferAsset record: %s", transactionKeyForTransferAsset)
 
 	//check if there is transfer asset record with the same key, and if so, throw an error.
 	result2, err2 := stub.GetState(transactionKeyForTransferAsset)

@@ -31,7 +31,7 @@ func InitHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 		initHandshakeRecord.ConsumerID, initHandshakeRecord.UserID, initHandshakeRecord.ProviderID)
 
 	//TODO: Although log level is set to Debug, it is not recognized and set to INFO by default. Therefore, making this INFO.
-	log.Infof("Transaction key for initHandshake message: %s", transactionKey)
+	//log.Infof("Transaction key for initHandshake message: %s", transactionKey)
 
 	//check if there is another transaction with the same key, and if so, throw an error.
 	resultByte, err := stub.GetState(transactionKey)
@@ -85,7 +85,7 @@ func RespHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 		respHandshakeRecord.ConsumerID, respHandshakeRecord.UserID, respHandshakeRecord.ProviderID)
 
 	//TODO: Although log level is set to Debug, it is not recognized and set to INFO by default. Therefore, making this INFO.
-	log.Infof("Transaction key for respHandshake message: %s", transactionKeyForRespHandshake)
+	//log.Infof("Transaction key for respHandshake message: %s", transactionKeyForRespHandshake)
 
 	//check if there is respHandshake record with the same key, and if so, throw an error.
 	result2, err2 := stub.GetState(transactionKeyForRespHandshake)
@@ -139,7 +139,7 @@ func ConfHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 		confHandshakeRecord.ConsumerID, confHandshakeRecord.UserID, confHandshakeRecord.ProviderID)
 
 	//TODO: Although log level is set to Debug, it is not recognized and set to INFO by default. Therefore, making this INFO.
-	log.Infof("Transaction key for respHandshake message: %s", transactionKeyForConfHandshake)
+	//log.Infof("Transaction key for respHandshake message: %s", transactionKeyForConfHandshake)
 
 	//check if there is confHandshake record with the same key, and if so, throw an error.
 	result2, err2 := stub.GetState(transactionKeyForConfHandshake)

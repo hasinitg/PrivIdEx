@@ -7,3 +7,5 @@ const CONF_HANDSHAKE = "confHandshake"
 
 const TRANSFER_ASSET = "transferAsset"
 const CONFIRM_RECEIPT_OF_ASSET = "confirmReceiptOfAsset"
+
+const QUERY = "query"

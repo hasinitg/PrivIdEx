@@ -43,21 +43,21 @@ func (idAsset *IdentityAsset) Invoke(stub shim.ChaincodeStubInterface) peer.Resp
 	var result string
 	var err error
 	switch fn {
-	case "initHandshake":
+	case util.INIT_HANDSHAKE:
 		log.Info("InitHandshake function was invoked.")
 		result, err = handshake.InitHandshake(stub, args, log)
-	case "respHandshake":
+	case util.RESP_HANDSHAKE:
 		log.Info("RespHandshake function was invoked.")
 		result, err = handshake.RespHandshake(stub, args, log)
-	case "confirmHandshake":
+	case util.CONF_HANDSHAKE:
 		log.Info("ConfHandshake function was invoked.")
 		result, err = handshake.ConfHandshake(stub, args, log)
-	case "transferAsset":
+	case util.TRANSFER_ASSET:
 		log.Info("TransferAsset function was invoked.")
 		result, err = transfer.TransferAsset(stub, args, log)
-	case "confirmReceiptOfAsset":
+	case util.CONFIRM_RECEIPT_OF_ASSET:
 		result, err = handshake.InitHandshake(stub, args, log)
-	case "query":
+	case util.QUERY:
 		log.Info("Query function was invoked.")
 		result, err = query(stub, args)
 	default:

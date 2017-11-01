@@ -42,7 +42,7 @@ func ConfirmReceiptOfAsset(stub shim.ChaincodeStubInterface, args []string, log 
 		confRecord.ConsumerID, confRecord.UserID, confRecord.ProviderID)
 
 	//TODO: Although log level is set to Debug, it is not recognized and set to INFO by default. Therefore, making this INFO.
-	log.Infof("Transaction key for confirmReceiptOfAsset: %s", transactionKeyForConfirmation)
+	//log.Infof("Transaction key for confirmReceiptOfAsset: %s", transactionKeyForConfirmation)
 
 	//check if there is transfer asset record with the same key, and if so, throw an error.
 	result2, err2 := stub.GetState(transactionKeyForConfirmation)
