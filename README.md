@@ -68,4 +68,4 @@ In a separate terminal, execute : 'docker-compose -f docker-compose-simple.yaml 
 
 ## Next Steps:
 
-To run the chaincode in a full hyperledger-fabric network and to simulate the protocol via CLI interface, please follow the instructions at: https://github.com/hasinitg/PrivIdEx/tree/master/fabric-network
+To run the chaincode in a full hyperledger-fabric network and to simulate the complete protocol via CLI interface, please follow the instructions at: https://github.com/hasinitg/PrivIdEx/tree/master/fabric-network
