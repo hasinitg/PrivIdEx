@@ -19,9 +19,9 @@ attached to the channel named: **mychannel**.
 
 5. **Simulating the protocol:**
 
-*InitHandshake Phase*
+i. *InitHandshake Phase:*
 
-i. Execute: 'peer chaincode invoke -n prividex -c '{"Args":["initHandshake", "{\\"HandshakeRecordType\\":\\"initHandshake\\",\\"TransactionID\\":\\"0ttl5HdQCG53TR4T6ANBQHVMvcq\\",\\"ConsumerID\\":\\"c1\\",\\"ConsumerPublicKey\\":\\"c_PK\\",\\"UserID\\":\\"u1\\",\\"UserPublicKey\\":\\"u_PK\\",\\"ProviderID\\":\\"p1\\",\\"ProviderPublicKey\\":\\"p_PK\\",\\"IdentityAssetName\\":\\"kyc_compliance\\",\\"Signature1\\":\\"s1\\",\\"Signature2\\":\\"s2\\"}"]}' -C mychannel' in order to invoke the 'initHandshake' method of the chaincode, with the given json input. 
+Execute: 'peer chaincode invoke -n prividex -c '{"Args":["initHandshake", "{\\"HandshakeRecordType\\":\\"initHandshake\\",\\"TransactionID\\":\\"0ttl5HdQCG53TR4T6ANBQHVMvcq\\",\\"ConsumerID\\":\\"c1\\",\\"ConsumerPublicKey\\":\\"c_PK\\",\\"UserID\\":\\"u1\\",\\"UserPublicKey\\":\\"u_PK\\",\\"ProviderID\\":\\"p1\\",\\"ProviderPublicKey\\":\\"p_PK\\",\\"IdentityAssetName\\":\\"kyc_compliance\\",\\"Signature1\\":\\"s1\\",\\"Signature2\\":\\"s2\\"}"]}' -C mychannel' in order to invoke the 'initHandshake' method of the chaincode, with the given json input. 
 
 *RespHandshake Phase*
 
