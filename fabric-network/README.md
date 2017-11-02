@@ -20,18 +20,20 @@ attached to the channel named: **mychannel**.
 5. **Simulating the protocol:**
 
 i. *InitHandshake Phase:*
+
 Execute: 'peer chaincode invoke -n prividex -c '{"Args":["initHandshake", "{\\"HandshakeRecordType\\":\\"initHandshake\\",\\"TransactionID\\":\\"0ttl5HdQCG53TR4T6ANBQHVMvcq\\",\\"ConsumerID\\":\\"c1\\",\\"ConsumerPublicKey\\":\\"c_PK\\",\\"UserID\\":\\"u1\\",\\"UserPublicKey\\":\\"u_PK\\",\\"ProviderID\\":\\"p1\\",\\"ProviderPublicKey\\":\\"p_PK\\",\\"IdentityAssetName\\":\\"kyc_compliance\\",\\"Signature1\\":\\"s1\\",\\"Signature2\\":\\"s2\\"}"]}' -C mychannel'. 
 
-*RespHandshake Phase*
+ii. *RespHandshake Phase:*
 
-ii. Execute: 'peer chaincode invoke -n prividex -c '{"Args":["respHandshake", "{\\"HandshakeRecordType\\":\\"respHandshake\\",\\"TransactionID\\":\\"0ttl5HdQCG53TR4T6ANBQHVMvcq\\",\\"ConsumerID\\":\\"c1\\",\\"ConsumerPublicKey\\":\\"c_PK\\",\\"UserID\\":\\"u1\\",\\"UserPublicKey\\":\\"u_PK\\",\\"ProviderID\\":\\"p1\\",\\"ProviderPublicKey\\":\\"p_PK\\",\\"IdentityAssetName\\":\\"kyc_compliance\\",\\"Signature1\\":\\"s1\\",\\"Signature2\\":\\"\\"}"]}' -C mychannel'
+Execute: 'peer chaincode invoke -n prividex -c '{"Args":["respHandshake", "{\\"HandshakeRecordType\\":\\"respHandshake\\",\\"TransactionID\\":\\"0ttl5HdQCG53TR4T6ANBQHVMvcq\\",\\"ConsumerID\\":\\"c1\\",\\"ConsumerPublicKey\\":\\"c_PK\\",\\"UserID\\":\\"u1\\",\\"UserPublicKey\\":\\"u_PK\\",\\"ProviderID\\":\\"p1\\",\\"ProviderPublicKey\\":\\"p_PK\\",\\"IdentityAssetName\\":\\"kyc_compliance\\",\\"Signature1\\":\\"s1\\",\\"Signature2\\":\\"\\"}"]}' -C mychannel'
 
-*ConfHandshake Phase*
+iii. *ConfHandshake Phase:*
 
 iii. Execute: 'peer chaincode invoke -n prividex -c '{"Args":["confHandshake", "{\\"HandshakeRecordType\\":\\"confHandshake\\",\\"TransactionID\\":\\"0ttl5HdQCG53TR4T6ANBQHVMvcq\\",\\"ConsumerID\\":\\"c1\\",\\"ConsumerPublicKey\\":\\"c_PK\\",\\"UserID\\":\\"u1\\",\\"UserPublicKey\\":\\"u_PK\\",\\"ProviderID\\":\\"p1\\",\\"ProviderPublicKey\\":\\"p_PK\\",\\"IdentityAssetName\\":\\"kyc_compliance\\",\\"Signature1\\":\\"s1\\",\\"Signature2\\":\\"\\"}"]}' -C mychannel'
 
-*TransferAsset Phase*
+iv. *TransferAsset Phase:*
 
 iv. Execute: 'peer chaincode invoke -n prividex -c '{"Args":["transferAsset", "{\\"TransactionID\\":\\"0ttl5HdQCG53TR4T6ANBQHVMvcq\\",\\"ConsumerID\\":\\"c1\\",\\"ConsumerPublicKey\\":\\"c_PK\\",\\"UserID\\":\\"u1\\",\\"UserPublicKey\\":\\"u_PK\\",\\"ProviderID\\":\\"p1\\",\\"ProviderPublicKey\\":\\"p_PK\\",\\"IdentityAssetName\\":\\"kyc_compliance\\",\\"IdAsset\\":\\"ewogICJpZEFzc2V0IiA6IHsKICAgICJuYW1lT2ZJZEFzc2V0IiA6ICJLWUNfZm9yX0JhbmtpbmciLAogICAgIm5hbWVPZlVzZXIiICAgIDogIkNoZXJyeSBCZXJyeSIsCiAgICAicGFzc3BvcnQiIDogewogICAgICAibnVtYmVyIiA6ICJONTg3ODY1IiwKICAgICAgImV4cGlyYXRpb24tZGF0ZSIgOiAiMDYtMDctMjAyMiIsCiAgICAgICJpc3N1aW5nLWNvdW50cnkiIDogIlVESyIKICAgIH0sCiAgICAiU1NOIiA6IHsKICAgICAgIm51bWJlciIgOiAiNjc4MC05NS0zMjQ1IiwKICAgICAgImV4cGlyYXRpb24tZGF0ZSIgOiAiMjAtMDctMjAxMCIKICAgIH0KCiAgfQp9\\",\\"Signature1\\":\\"s1\\"}"]}' -C mychannel'
+
 
 6. You can shutdown the network by changing the to the directory:**fabric-network/basic-network** and executing the command: **./stop.sh**. If you want to make changes to the chaincode and redeploy the chaincode in a fresh blockchain network, execute the command: **./teardown.sh**.
