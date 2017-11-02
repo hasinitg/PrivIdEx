@@ -19,15 +19,15 @@ attached to the channel named: **mychannel**.
 
 5. **Simulating the protocol:**
 
-i. *InitHandshake Phase:* (executed by the identity provider)
+i. *InitHandshake Phase:* (executed by the identity consumer)
 
 Execute: 'peer chaincode invoke -n prividex -c '{"Args":["initHandshake", "{\\"HandshakeRecordType\\":\\"initHandshake\\",\\"TransactionID\\":\\"0ttl5HdQCG53TR4T6ANBQHVMvcq\\",\\"ConsumerID\\":\\"c1\\",\\"ConsumerPublicKey\\":\\"c_PK\\",\\"UserID\\":\\"u1\\",\\"UserPublicKey\\":\\"u_PK\\",\\"ProviderID\\":\\"p1\\",\\"ProviderPublicKey\\":\\"p_PK\\",\\"IdentityAssetName\\":\\"kyc_compliance\\",\\"Signature1\\":\\"s1\\",\\"Signature2\\":\\"s2\\"}"]}' -C mychannel'. 
 
-ii. *RespHandshake Phase:* (executed by the identity consumer)
+ii. *RespHandshake Phase:* (executed by the identity provider)
 
 Execute: 'peer chaincode invoke -n prividex -c '{"Args":["respHandshake", "{\\"HandshakeRecordType\\":\\"respHandshake\\",\\"TransactionID\\":\\"0ttl5HdQCG53TR4T6ANBQHVMvcq\\",\\"ConsumerID\\":\\"c1\\",\\"ConsumerPublicKey\\":\\"c_PK\\",\\"UserID\\":\\"u1\\",\\"UserPublicKey\\":\\"u_PK\\",\\"ProviderID\\":\\"p1\\",\\"ProviderPublicKey\\":\\"p_PK\\",\\"IdentityAssetName\\":\\"kyc_compliance\\",\\"Signature1\\":\\"s1\\",\\"Signature2\\":\\"\\"}"]}' -C mychannel'
 
-iii. *ConfHandshake Phase:* (executed by the identity provider)
+iii. *ConfHandshake Phase:* (executed by the identity consumer)
 
 Execute: 'peer chaincode invoke -n prividex -c '{"Args":["confHandshake", "{\\"HandshakeRecordType\\":\\"confHandshake\\",\\"TransactionID\\":\\"0ttl5HdQCG53TR4T6ANBQHVMvcq\\",\\"ConsumerID\\":\\"c1\\",\\"ConsumerPublicKey\\":\\"c_PK\\",\\"UserID\\":\\"u1\\",\\"UserPublicKey\\":\\"u_PK\\",\\"ProviderID\\":\\"p1\\",\\"ProviderPublicKey\\":\\"p_PK\\",\\"IdentityAssetName\\":\\"kyc_compliance\\",\\"Signature1\\":\\"s1\\",\\"Signature2\\":\\"\\"}"]}' -C mychannel'
 
