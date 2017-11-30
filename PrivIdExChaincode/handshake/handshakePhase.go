@@ -5,6 +5,8 @@ import (
 	"chaincode/PrivIdEx/PrivIdExChaincode/util"
 	"encoding/json"
 	"fmt"
+	"bytes"
+	"chaincode/PrivIdEx/PrivIdExChaincode/discovery"
 )
 
 /**
@@ -28,7 +30,7 @@ func InitHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 	//TODO: validate the ids and signatures on the message.
 
 	transactionKey := util.CreateTransactionKey(initHandshakeRecord.HandshakeRecordType, initHandshakeRecord.TransactionID,
-		initHandshakeRecord.ConsumerID, initHandshakeRecord.UserID, initHandshakeRecord.ProviderID)
+		string(initHandshakeRecord.ConsumerID), string(initHandshakeRecord.UserID), string(initHandshakeRecord.ProviderID))
 
 	//TODO: Although log level is set to Debug, it is not recognized and set to INFO by default. Therefore, making this INFO.
 	//log.Infof("Transaction key for initHandshake message: %s", transactionKey)
@@ -70,7 +72,7 @@ func RespHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 	//TODO: validate the ids and signatures on the message.
 
 	transactionKeyForInitHandshake := util.CreateTransactionKey(util.INIT_HANDSHAKE, respHandshakeRecord.TransactionID,
-		respHandshakeRecord.ConsumerID, respHandshakeRecord.UserID, respHandshakeRecord.ProviderID)
+		string(respHandshakeRecord.ConsumerID), string(respHandshakeRecord.UserID), string(respHandshakeRecord.ProviderID))
 
 	//check if there is initHandshake record with the same key, and if not, throw an error.
 	result, err := stub.GetState(transactionKeyForInitHandshake)
@@ -82,7 +84,7 @@ func RespHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 	}
 
 	transactionKeyForRespHandshake := util.CreateTransactionKey(util.RESP_HANDSHAKE, respHandshakeRecord.TransactionID,
-		respHandshakeRecord.ConsumerID, respHandshakeRecord.UserID, respHandshakeRecord.ProviderID)
+		string(respHandshakeRecord.ConsumerID), string(respHandshakeRecord.UserID), string(respHandshakeRecord.ProviderID))
 
 	//TODO: Although log level is set to Debug, it is not recognized and set to INFO by default. Therefore, making this INFO.
 	//log.Infof("Transaction key for respHandshake message: %s", transactionKeyForRespHandshake)
@@ -124,7 +126,7 @@ func ConfHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 	//TODO: validate the ids and signatures on the message.
 
 	transactionKeyForRespHandshake := util.CreateTransactionKey(util.RESP_HANDSHAKE, confHandshakeRecord.TransactionID,
-		confHandshakeRecord.ConsumerID, confHandshakeRecord.UserID, confHandshakeRecord.ProviderID)
+		string(confHandshakeRecord.ConsumerID), string(confHandshakeRecord.UserID), string(confHandshakeRecord.ProviderID))
 
 	//check if there is respHandshake record with the same key, and if not, throw an error.
 	result, err := stub.GetState(transactionKeyForRespHandshake)
@@ -136,7 +138,7 @@ func ConfHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 	}
 
 	transactionKeyForConfHandshake := util.CreateTransactionKey(util.CONF_HANDSHAKE, confHandshakeRecord.TransactionID,
-		confHandshakeRecord.ConsumerID, confHandshakeRecord.UserID, confHandshakeRecord.ProviderID)
+		string(confHandshakeRecord.ConsumerID), string(confHandshakeRecord.UserID), string(confHandshakeRecord.ProviderID))
 
 	//TODO: Although log level is set to Debug, it is not recognized and set to INFO by default. Therefore, making this INFO.
 	//log.Infof("Transaction key for respHandshake message: %s", transactionKeyForConfHandshake)
@@ -157,4 +159,38 @@ func ConfHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 	return resp, nil
 }
 
+func CreateUserSignedMessageInInitHandshakeMessage(dresp discovery.DiscoveryResponse)(string){
+	var buffer bytes.Buffer
+	buffer.WriteString(string(dresp.ConsumerAnonymousID))
+	buffer.WriteString(":")
+	buffer.WriteString(string(dresp.ConsumerAnonymousPublicKey))
+	buffer.WriteString(":")
+	buffer.WriteString(dresp.IdentityAssetName)
+	buffer.WriteString(":")
+	buffer.WriteString(string(dresp.UserAnonymousID))
+	buffer.WriteString(":")
+	buffer.WriteString(string(dresp.ProviderAnonymousID))
+	buffer.WriteString(":")
+	buffer.WriteString(string(dresp.ProviderAnonymousPubKey))
+	return buffer.String()
+
+}
+
+
+func CreateConsumerSignedMessageInInitHandshakeMessage(initHandshakeRecord HandshakeRecord) (string){
+	dresp := discovery.DiscoveryResponse{[]byte (initHandshakeRecord.ConsumerID),
+									[]byte (initHandshakeRecord.ConsumerPublicKey),
+										initHandshakeRecord.IdentityAssetName,
+										[]byte (initHandshakeRecord.UserID),
+										[]byte (initHandshakeRecord.ProviderID),
+										[]byte (initHandshakeRecord.ProviderPublicKey),
+										nil}
+	userMessage := CreateUserSignedMessageInInitHandshakeMessage(dresp)
+
+	var buffer bytes.Buffer
+	buffer.WriteString(initHandshakeRecord.TransactionID)
+	buffer.WriteString(userMessage)
+	buffer.WriteString(string(initHandshakeRecord.Signature1))
+	return buffer.String()
+}
 

@@ -14,11 +14,15 @@ import (
 	"chaincode/PrivIdEx/PrivIdExChaincode/transfer"
 	"io/ioutil"
 	"chaincode/PrivIdEx/PrivIdExChaincode/confirm"
+	"bytes"
+	"chaincode/PrivIdEx/PrivIdExChaincode/crypt"
+	"chaincode/PrivIdEx/PrivIdExChaincode/discovery"
 )
 
 func TestEncodingDecodingHandshakeRecord(t *testing.T){
 	transactionID := ksuid.New().String()
 	//create a dummy handshake message
+
 	initHandshakeMessage := createInitHandshakeRecord(transactionID)
 
 	encodedMsg, err := json.Marshal(initHandshakeMessage)
@@ -37,8 +41,8 @@ func TestEncodingDecodingHandshakeRecord(t *testing.T){
 		//fmt.Println(handshakeRecord.ConsumerID)
 
 		consumerID := handshakeRecord.ConsumerID
-		if "c1" != consumerID {
-			fmt.Println("ConsumerID : %v", consumerID, "was not as the expected value which is: %v.", initHandshakeMessage.ConsumerID )
+		if !bytes.Equal([]byte("c1"), []byte (consumerID)) {
+			fmt.Println("ConsumerID : %v", string(consumerID), "was not as the expected value which is: %v.", string(initHandshakeMessage.ConsumerID))
 		}
 	}
 }
@@ -192,7 +196,7 @@ func testInitHandshake(t *testing.T, stub *shim.MockStub, transactionID string) 
 
 		//check if the message is in the ledger.
 		checkQuery(t, stub, util.CreateTransactionKey(util.INIT_HANDSHAKE, initHandshakeMessage.TransactionID,
-			initHandshakeMessage.ConsumerID, initHandshakeMessage.UserID, initHandshakeMessage.ProviderID), string(encodedMsg))
+			string(initHandshakeMessage.ConsumerID), string(initHandshakeMessage.UserID), string(initHandshakeMessage.ProviderID)), string(encodedMsg))
 	}
 	return shim.OK
 }
@@ -317,6 +321,7 @@ func testConfirmReceiptOfIDAsset(t *testing.T, stub *shim.MockStub, transactionI
 	return shim.OK
 }
 
+//-----------------------------------Util methods for the test cases----------------------------------------------------
 func checkInit(t *testing.T, stub *shim.MockStub, args [][]byte) (string){
 	response := stub.MockInit("1", args)
 	if response.Status != shim.OK {
@@ -399,9 +404,88 @@ func createTransferAssetRecord(transactionID string, t *testing.T) (transfer.Tra
 	return transferRecord
 }
 
-func createConfirmReceiptOfAssetRecord(transactionID string) (confirm.ConfirmRecord){
+func createConfirmReceiptOfAssetRecord(transactionID string) (confirm.ConfirmRecord) {
 	confirmRecord := confirm.ConfirmRecord{transactionID, "c1", "c_PK", "u1",
-	"u_PK", "p1", "p_PK", "kyc_compliance", "s1"}
+		"u_PK", "p1", "p_PK", "kyc_compliance", "s1"}
 
 	return confirmRecord
+}
+
+/*func createDummyInitHandshakeRecord() (handshake.HandshakeRecord){
+	//create a transaction id (the reason why we create the transaction id by the caller, rather than generating it in
+	// the chaincode is that: chaincode is run in multiple nodes and difff transaction ids could be generated)
+	transactionID := ksuid.New().String()
+	//fmt.Println(transactionID)
+
+	//create a dummy handshake message for now. TODO: add actual crypto information.
+	initHandshakeMessage := handshake.HandshakeRecord{transactionID, []byte("c1"), []byte("c_PK"), []byte("u1"),
+		[]byte("u_PK"), []byte("p1"), []byte("p_PK"), "kyc_compliance", []byte("s1"), []byte("s2")}
+	return initHandshakeMessage
+}*/
+
+func createInitHandshakeRecordWithCrypto(t *testing.T) (handshake.HandshakeRecord){
+	//create a transaction id (the reason why we create the transaction id by the caller, rather than generating it in
+	// the chaincode is that: chaincode is run in multiple nodes and difff transaction ids could be generated)
+	transactionID := ksuid.New().String()
+
+	//read consumer public key
+	consumerPubKey, err1 := crypt.ReadPublicKeyDataFromFile("test/public.consumerSigningKey.pem")
+	checkError("Error in reading consumer public key", err1, t)
+
+	//create consumer ID by hashing consumer public key
+	consumerID, err2 := crypt.Hash(consumerPubKey)
+	checkError("Error in creating a hash of consumer public key", err2, t)
+
+	//read user public key
+	userPubKey, err3 := crypt.ReadPublicKeyDataFromFile("test/public.userSigningKey.pem")
+	checkError("Error in reading user public key", err3, t)
+
+	//create user ID by hashing user public key
+	userID, err4 := crypt.Hash(userPubKey)
+	checkError("Error in creating a hash of user public key", err4, t)
+
+	//read producer public key
+	producerPubKey, err5 := crypt.ReadPublicKeyDataFromFile("test/public.providerSigningKey.pem")
+	checkError("Error in reading producer public key", err5, t)
+
+	//create provider ID by hashing provider public key
+	producerID, err6 := crypt.Hash(producerPubKey)
+	checkError("Error in creating a hash of producer public key", err6, t)
+
+	IdentityAssetName := "kyc_compliance"
+
+	//create user signed message
+	userSignedMessage := handshake.CreateUserSignedMessageInInitHandshakeMessage(discovery.DiscoveryResponse{consumerID,
+	consumerPubKey, IdentityAssetName, userID, producerID,
+	producerPubKey, nil})
+
+	//read userPrivateKey
+	userPrivateKey, err2 := crypt.ReadPrivateKeyFromFile("test/private.userSigningKey.pem")
+
+	//create the signature of the user
+	userSig, err7 := userPrivateKey.Sign([]byte(userSignedMessage))
+	checkError("Error in creating user signature in initHandshake message.", err7, t)
+
+	//create a initHandshake message without consumer signature.
+	initHandshakeMessage := handshake.HandshakeRecord{util.INIT_HANDSHAKE, transactionID,
+		consumerID, consumerPubKey,
+		userID, userPubKey, producerID, producerPubKey,
+		IdentityAssetName, userSig, []byte("")}
+
+	//create consumer signed message
+	//consumerSignedMessage := handshake.CreateConsumerSignedMessageInInitHandshakeMessage(initHandshakeMessage)
+	handshake.CreateConsumerSignedMessageInInitHandshakeMessage(initHandshakeMessage)
+
+	//read consumer private key
+	_, err8 := crypt.ReadPrivateKeyFromFile("test/private.consumerSigningKey.pem")
+	checkError("Error in creating consumer signature in initHandshake message.", err8, t)
+
+
+	return initHandshakeMessage
+	//return nil
+}
+
+func checkError(message string, err error, t *testing.T){
+	fmt.Println(message, err)
+	t.FailNow()
 }
