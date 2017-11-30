@@ -2,6 +2,7 @@ package confirm
 
 
 type ConfirmRecord struct {
+	RecordType,
 	TransactionID,
 	ConsumerID,
 	ConsumerPublicKey,

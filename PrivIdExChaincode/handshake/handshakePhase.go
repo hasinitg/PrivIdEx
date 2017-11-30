@@ -23,11 +23,11 @@ func InitHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 		return "", util.JSONDecodingError{args[0]}
 	}
 	//set the handshake record type
-	initHandshakeRecord.HandshakeRecordType = util.INIT_HANDSHAKE
+	initHandshakeRecord.RecordType = util.INIT_HANDSHAKE
 
 	//TODO: validate the ids and signatures on the message.
 
-	transactionKey := util.CreateTransactionKey(initHandshakeRecord.HandshakeRecordType, initHandshakeRecord.TransactionID,
+	transactionKey := util.CreateTransactionKey(initHandshakeRecord.RecordType, initHandshakeRecord.TransactionID,
 		initHandshakeRecord.ConsumerID, initHandshakeRecord.UserID, initHandshakeRecord.ProviderID)
 
 	//TODO: Although log level is set to Debug, it is not recognized and set to INFO by default. Therefore, making this INFO.
@@ -65,7 +65,7 @@ func RespHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 	}
 
 	//set the handshake record type
-	respHandshakeRecord.HandshakeRecordType = util.RESP_HANDSHAKE
+	respHandshakeRecord.RecordType = util.RESP_HANDSHAKE
 
 	//TODO: validate the ids and signatures on the message.
 
@@ -119,7 +119,7 @@ func ConfHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 	}
 
 	//set the handshake record type
-	confHandshakeRecord.HandshakeRecordType = util.CONF_HANDSHAKE
+	confHandshakeRecord.RecordType = util.CONF_HANDSHAKE
 
 	//TODO: validate the ids and signatures on the message.
 

@@ -392,7 +392,7 @@ func createTransferAssetRecord(transactionID string, t *testing.T) (transfer.Tra
 		t.FailNow()
 	}
 
-	transferRecord := transfer.TransferRecord{transactionID, "c1", "c_PK",
+	transferRecord := transfer.TransferRecord{util.TRANSFER_ASSET,transactionID, "c1", "c_PK",
 		"u1", "u_PK", "p1", "p_PK", "kyc_compliance",
 		dat, "s1"}
 
@@ -400,7 +400,7 @@ func createTransferAssetRecord(transactionID string, t *testing.T) (transfer.Tra
 }
 
 func createConfirmReceiptOfAssetRecord(transactionID string) (confirm.ConfirmRecord){
-	confirmRecord := confirm.ConfirmRecord{transactionID, "c1", "c_PK", "u1",
+	confirmRecord := confirm.ConfirmRecord{util.CONFIRM_RECEIPT_OF_ASSET,transactionID, "c1", "c_PK", "u1",
 	"u_PK", "p1", "p_PK", "kyc_compliance", "s1"}
 
 	return confirmRecord

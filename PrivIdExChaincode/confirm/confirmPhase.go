@@ -24,6 +24,9 @@ func ConfirmReceiptOfAsset(stub shim.ChaincodeStubInterface, args []string, log 
 		return "", util.JSONDecodingError{args[0]}
 	}
 
+	//set the record type
+	confRecord.RecordType = util.CONFIRM_RECEIPT_OF_ASSET
+
 	//TODO: validate the ids and signatures on the message.
 
 	transactionKeyForTransferAsset := util.CreateTransactionKey(util.TRANSFER_ASSET, confRecord.TransactionID,
@@ -38,7 +41,7 @@ func ConfirmReceiptOfAsset(stub shim.ChaincodeStubInterface, args []string, log 
 		return "", fmt.Errorf("A transferAsset record for the transaction key: %s does not exist.", transactionKeyForTransferAsset)
 	}
 
-	transactionKeyForConfirmation := util.CreateTransactionKey(util.CONFIRM_RECEIPT_OF_ASSET, confRecord.TransactionID,
+	transactionKeyForConfirmation := util.CreateTransactionKey(confRecord.RecordType, confRecord.TransactionID,
 		confRecord.ConsumerID, confRecord.UserID, confRecord.ProviderID)
 
 	//TODO: Although log level is set to Debug, it is not recognized and set to INFO by default. Therefore, making this INFO.

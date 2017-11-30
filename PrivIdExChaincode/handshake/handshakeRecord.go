@@ -1,7 +1,7 @@
 package handshake
 
 type HandshakeRecord struct{
-	HandshakeRecordType,
+	RecordType,
 	TransactionID,
 	ConsumerID,
 	ConsumerPublicKey,

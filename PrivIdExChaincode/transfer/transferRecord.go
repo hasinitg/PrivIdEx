@@ -1,6 +1,7 @@
 package transfer
 
 type TransferRecord struct{
+	RecordType,
 	TransactionID,
 	ConsumerID,
 	ConsumerPublicKey,

@@ -22,6 +22,8 @@ func TransferAsset(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 	if err := json.Unmarshal([]byte(args[0]), &transfRecord); err != nil {
 		return "", util.JSONDecodingError{args[0]}
 	}
+	//set the handshake record type
+	transfRecord.RecordType = util.TRANSFER_ASSET
 
 	//TODO: validate the ids and signatures on the message.
 
@@ -37,7 +39,7 @@ func TransferAsset(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 		return "", fmt.Errorf("A confHandshake record for the transaction key: %s does not exist.", transactionKeyForConfHandshake)
 	}
 
-	transactionKeyForTransferAsset := util.CreateTransactionKey(util.TRANSFER_ASSET, transfRecord.TransactionID,
+	transactionKeyForTransferAsset := util.CreateTransactionKey(transfRecord.RecordType, transfRecord.TransactionID,
 		transfRecord.ConsumerID, transfRecord.UserID, transfRecord.ProviderID)
 
 	//TODO: Although log level is set to Debug, it is not recognized and set to INFO by default. Therefore, making this INFO.
