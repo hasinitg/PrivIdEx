@@ -65,3 +65,7 @@ You can see the log messages printed by our chaincode in Terminal 2.
 
 ### Stop the fabric network:
 In a separate terminal, execute : 'docker-compose -f docker-compose-simple.yaml down' gracefully shutdown the blockchain network, during the chaincode development process.
+
+## Next Steps:
+
+To run the chaincode in a full hyperledger-fabric network and to simulate the complete protocol via CLI interface, please follow the instructions at: https://github.com/hasinitg/PrivIdEx/tree/master/fabric-network
