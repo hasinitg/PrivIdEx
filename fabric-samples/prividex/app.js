@@ -20,7 +20,7 @@ console.log('Store path:'+store_path);
 var tx_id = null;
 
 
-var prividex_transaction_id = "0ttl5HdQCG53TR4T6ANBQHVMvcqAAABBBCCCDDEEFFGGHHII";
+var prividex_transaction_id = "0ttl5HdQCG53TR4T6ANBQHVMvcqAAABBBCCCDDEEFFGGHHIIHH";
 var consumer_id = "c1";
 var consumer_public_key = "c_PK";
 var user_id = "user1";
@@ -83,7 +83,7 @@ var transferAsset_opts = {
     ProviderID: provider_id,
     ProviderPublicKey: provider_public_key,
     IdentityAssetName: identity_asset_name,
-    IdAsset: identity_asset
+    IdAsset: identity_asset,
     Signature1: signature_1,
 };
 
