@@ -19,8 +19,7 @@ var store_path = path.join(__dirname, 'hfc-key-store');
 console.log('Store path:'+store_path);
 var tx_id = null;
 
-
-var prividex_transaction_id = "0ttl5HdQCG53TR4T6ANBQHVMvcqAAABBBCCCDDEEFFGGHHIIHH";
+var prividex_transaction_id = "FF";
 var consumer_id = "c1";
 var consumer_public_key = "c_PK";
 var user_id = "user1";
@@ -31,8 +30,7 @@ var identity_asset_name = "kyc_compliance";
 var signature_1 = 's1';
 var signature_2 = 's2';
 
-var initHandShake_opts = {
-    HandshakeRecordType: "initHandshake",
+var user_defined_opts = {
     TransactionID: prividex_transaction_id,
     ConsumerID: consumer_id,
     ConsumerPublicKey: consumer_public_key,
@@ -45,83 +43,46 @@ var initHandShake_opts = {
     Signature2: signature_2
 };
 
-var respHandshake_opts = {
-    HandshakeRecordType: "respHandshake",
-    TransactionID: prividex_transaction_id,
-    ConsumerID: consumer_id,
-    ConsumerPublicKey: consumer_public_key,
-    UserID: user_id,
-    UserPublicKey: user_public_key,
-    ProviderID: provider_id,
-    ProviderPublicKey: provider_public_key,
-    IdentityAssetName: identity_asset_name,
-    Signature1: signature_1,
-    Signature2: ""
+var g_options = {
+    fabric_client: fabric_client,
+    channel: channel,
+    peer: peer,
+    order: order,
+    member_user: "",
+    store_path: store_path,
+    tx_id: tx_id,
+    user_id: 'user1',
+    chaincode_id: 'prividex',
+    fcn: 'iHandshake',
+    channel_id: 'mychannel'
 };
 
-var confHandshake_opts = {
-    HandshakeRecordType: "confHandshake",
-    TransactionID: prividex_transaction_id,
-    ConsumerID: consumer_id,
-    ConsumerPublicKey: consumer_public_key,
-    UserID: user_id,
-    UserPublicKey: user_public_key,
-    ProviderID: provider_id,
-    ProviderPublicKey: provider_public_key,
-    IdentityAssetName: identity_asset_name,
-    Signature1: signature_1,
-    Signature2: ""
-};
+var HLClient = require('./index.js')(g_options);
 
-var identity_asset = "ewogICJpZEFzc2V0IiA6IHsKICAgICJuYW1lT2ZJZEFzc2V0IiA6ICJLWUNfZm9yX0JhbmtpbmciLAogICAgIm5hbWVPZlVzZXIiICAgIDogIkNoZXJyeSBCZXJyeSIsCiAgICAicGFzc3BvcnQiIDogewogICAgICAibnVtYmVyIiA6ICJONTg3ODY1IiwKICAgICAgImV4cGlyYXRpb24tZGF0ZSIgOiAiMDYtMDctMjAyMiIsCiAgICAgICJpc3N1aW5nLWNvdW50cnkiIDogIlVESyIKICAgIH0sCiAgICAiU1NOIiA6IHsKICAgICAgIm51bWJlciIgOiAiNjc4MC05NS0zMjQ1IiwKICAgICAgImV4cGlyYXRpb24tZGF0ZSIgOiAiMjAtMDctMjAxMCIKICAgIH0KCiAgfQp9";
-var transferAsset_opts = {
-    TransactionID: prividex_transaction_id,
-    ConsumerID: consumer_id,
-    ConsumerPublicKey: consumer_public_key,
-    UserID: user_id,
-    UserPublicKey: user_public_key,
-    ProviderID: provider_id,
-    ProviderPublicKey: provider_public_key,
-    IdentityAssetName: identity_asset_name,
-    IdAsset: identity_asset,
-    Signature1: signature_1,
-};
+HLClient.fwdinitHandshakeReqtoBC(user_defined_opts);
 
+// HLClient.fwdHandshakeResptoBC(user_defined_opts);
 
-var confirmReceiptOfAsset_opts = {
-    TransactionID: prividex_transaction_id,
-    ConsumerID: consumer_id,
-    ConsumerPublicKey: consumer_public_key,
-    UserID: user_id,
-    UserPublicKey: user_public_key,
-    ProviderID: provider_id,
-    ProviderPublicKey: provider_public_key,
-    IdentityAssetName: identity_asset_name,
-    Signature1: signature_1,
-};
+//HLClient.fwdConfHandshaketoBC(user_defined_opts);
 
+// var identity_asset = "ewogICJpZEFzc2V0IiA6IHsKICAgICJuYW1lT2ZJZEFzc2V0IiA6ICJLWUNfZm9yX0JhbmtpbmciLAogICAgIm5hbWVPZlVzZXIiICAgIDogIkNoZXJyeSBCZXJyeSIsCiAgICAicGFzc3BvcnQiIDogewogICAgICAibnVtYmVyIiA6ICJONTg3ODY1IiwKICAgICAgImV4cGlyYXRpb24tZGF0ZSIgOiAiMDYtMDctMjAyMiIsCiAgICAgICJpc3N1aW5nLWNvdW50cnkiIDogIlVESyIKICAgIH0sCiAgICAiU1NOIiA6IHsKICAgICAgIm51bWJlciIgOiAiNjc4MC05NS0zMjQ1IiwKICAgICAgImV4cGlyYXRpb24tZGF0ZSIgOiAiMjAtMDctMjAxMCIKICAgIH0KCiAgfQp9";
 
-var g_opt = {
-    'fabric_client': fabric_client,
-    'channel': channel,
-    'peer': peer,
-    'order': order,
-    'member_user': member_user,
-    'store_path': store_path,
-    'tx_id': tx_id,
-    'user_id': 'user1'
+// var user_defined_opts = {
+//     TransactionID: prividex_transaction_id,
+//     ConsumerID: consumer_id,
+//     ConsumerPublicKey: consumer_public_key,
+//     UserID: user_id,
+//     UserPublicKey: user_public_key,
+//     ProviderID: provider_id,
+//     ProviderPublicKey: provider_public_key,
+//     IdentityAssetName: identity_asset_name,
+//     IdAsset: identity_asset,
+//     Signature1: signature_1,
+//     Signature2: signature_2
+// };
 
-}
+// HLClient.fwdinitAssetTransferReqtoBC(user_defined_opts);
 
-var invoke_module = require('./invoke.js');
-invoke_module(g_opt, initHandShake_opts);
-
-
-// var fcw = require('./utils/fc_wrangler/index.js')({ block_delay: helper.getBlockDelay() }, logger);     //fabric client wrangler wraps the SDK
-
-
-// var marbles_lib = require('./utils/marbles_cc_lib.js')(enrollObj, opts, fcw, logger);
-
-
+// HLClient.fwdconfAssetTransferfromBC(user_defined_opts);
 
 
