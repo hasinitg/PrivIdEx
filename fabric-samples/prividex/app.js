@@ -19,7 +19,7 @@ var store_path = path.join(__dirname, 'hfc-key-store');
 console.log('Store path:'+store_path);
 var tx_id = null;
 
-var prividex_transaction_id = "FF";
+var prividex_transaction_id = "HH";
 var consumer_id = "c1";
 var consumer_public_key = "c_PK";
 var user_id = "user1";
@@ -53,7 +53,7 @@ var g_options = {
     tx_id: tx_id,
     user_id: 'user1',
     chaincode_id: 'prividex',
-    fcn: 'iHandshake',
+    fcn: 'initHandshake',
     channel_id: 'mychannel'
 };
 
@@ -85,4 +85,6 @@ HLClient.fwdinitHandshakeReqtoBC(user_defined_opts);
 
 // HLClient.fwdconfAssetTransferfromBC(user_defined_opts);
 
+// user_defined_opts['HandshakeRecordType'] = 'initHandshake';
+// HLClient.getData(user_defined_opts);
 
