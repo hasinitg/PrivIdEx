@@ -42,6 +42,8 @@ func TransferAsset(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 	transactionKeyForTransferAsset := util.CreateTransactionKey(transfRecord.RecordType, transfRecord.TransactionID,
 		transfRecord.ConsumerID, transfRecord.UserID, transfRecord.ProviderID)
 
+
+
 	//TODO: Although log level is set to Debug, it is not recognized and set to INFO by default. Therefore, making this INFO.
 	//log.Infof("Transaction key for transferAsset record: %s", transactionKeyForTransferAsset)
 
@@ -58,5 +60,14 @@ func TransferAsset(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 		return "", fmt.Errorf("Failed to submit the transferAsset record to the blockchain for processing: %s", args[0])
 	}
 	resp := fmt.Sprintf("TransferAsset record was submitted to the blockchain for processing.")
+
+
+	evtErr := stub.SetEvent("TransferAssetEvent", []byte(transactionKeyForTransferAsset))
+
+	if evtErr != nil {
+  		return "", fmt.Errorf("Error setting TransferAssetEvent Event [%s]", evtErr)
+
+	}
+
 	return resp, nil
 }

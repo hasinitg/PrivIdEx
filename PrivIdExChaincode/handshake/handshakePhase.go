@@ -46,6 +46,16 @@ func InitHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 		return "", fmt.Errorf("Failed to submit the initHandshake message to the blockchain for processing: %s", args[0])
 	}
 	resp := fmt.Sprintf("InitHandshake message was submitted to the blockchain for processing.")
+
+	evtErr := stub.SetEvent("InitHandShakeEvent", []byte(transactionKey))
+	fmt.Sprintf("SetEvent, InitHandShakeEvent, with [%s]", transactionKey);
+
+	if evtErr != nil {
+  		return "", fmt.Errorf("Error setting InitHandShakeEvent Event [%s]", evtErr)
+
+	}
+
+
 	return resp, nil
 }
 
@@ -100,6 +110,15 @@ func RespHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 		return "", fmt.Errorf("Failed to submit the respHandshake message to the blockchain for processing: %s", args[0])
 	}
 	resp := fmt.Sprintf("RespHandshake message was submitted to the blockchain for processing.")
+
+
+	evtErr := stub.SetEvent("RespHandshakeEvent", []byte(transactionKeyForRespHandshake))
+
+	if evtErr != nil {
+  		return "", fmt.Errorf("Error setting RespHandshakeEvent Event [%s]", evtErr)
+
+	}
+
 	return resp, nil
 }
 
@@ -154,6 +173,15 @@ func ConfHandshake(stub shim.ChaincodeStubInterface, args []string, log *shim.Ch
 		return "", fmt.Errorf("Failed to submit the confHandshake message to the blockchain for processing: %s", args[0])
 	}
 	resp := fmt.Sprintf("ConfHandshake message was submitted to the blockchain for processing.")
+
+
+	evtErr := stub.SetEvent("ConfHandshakeEvent", []byte(transactionKeyForConfHandshake))
+
+	if evtErr != nil {
+  		return "", fmt.Errorf("Error setting ConfHandshakeEvent Event [%s]", evtErr)
+
+	}
+
 	return resp, nil
 }
 

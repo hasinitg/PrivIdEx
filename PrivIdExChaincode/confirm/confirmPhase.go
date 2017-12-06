@@ -60,5 +60,15 @@ func ConfirmReceiptOfAsset(stub shim.ChaincodeStubInterface, args []string, log 
 		return "", fmt.Errorf("Failed to submit the confirmReceiptOfAsset record to the blockchain for processing: %s", args[0])
 	}
 	resp := fmt.Sprintf("ConfirmReceiptOfAsset record was submitted to the blockchain for processing.")
+
+
+	evtErr := stub.SetEvent("ConfirmReceiptOfAssetEvent", []byte(transactionKeyForConfirmation))
+
+	if evtErr != nil {
+  		return "", fmt.Errorf("Error setting ConfirmReceiptOfAssetEvent Event [%s]", evtErr)
+
+	}
+
+
 	return resp, nil
 }
