@@ -1,3 +1,0 @@
-[submodule "zkSNARK/depends/libsnark"]
-	path = zkSNARK/depends/libsnark
-	url = https://github.com/scipr-lab/libsnark.git
